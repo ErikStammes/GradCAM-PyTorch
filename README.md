@@ -1,20 +1,26 @@
-### Grad-CAM wrapper for PyTorch (WIP)
-Grad-CAM wrapper is a utility that easily allows you extract and visualize gradient-weighted class activation mappings for your custom model. It works by wrapping around your model, without overwriting any of your function definitions.
+## Grad-CAM wrapper for PyTorch (WIP)
+Grad-CAM wrapper is a utility that easily allows you extract and visualize gradient-weighted class activation mappings for your custom model. It works by wrapping around your model, without overwriting any of your models properties/function definitions.
 
 ### Features
 * Computes Grad-CAM using your custom model
 * Support for multitarget classification
 * Grad-CAM computation is differentiable, allowing you to make it trainable
 * Multi-GPU support
-* Visualization using `opencv`, `matplotlib` or `Pillow`, depending on your choice
+* Visualization using `opencv`, or `Pillow`, depending on your preference
 * Sensible defaults, but many configurable options
 * Licensed under MIT
 
 ### Installation
-Requirements:
+Minimum requirements:
 ```
 python >= 3.6
 torch
+```
+For visualization:
+```
+matplotlib
+numpy
+python-opencv OR Pillow
 ```
 
 ### Examples

@@ -12,21 +12,6 @@ def gradcam_wrapper(model):
                 function, which is used to generate the Grad-CAMs. The forward() function now also returns a tuple of
                 (logits, gcams)
 
-    Example:
-        model_params = {'pretrained': True} #TODO: does this work?
-        gradcam_layer = 'layer4'
-        model = gradcam_wrapper(torchvision.models.ResNet)
-        model = model(model_params, gradcam_layer)
-
-        # Load your data
-
-        logits, gcams = model(image)
-
-        # Optionally use your targets (or any other labels) to generate the GradCAMs:
-        logits, gcams = model(image, labels=targets)
-
-        # Visualization
-        #TODO
     """
     class GradCAMWrapper(model):
         """ Wrapper that stores the forward features and gradients to create a GradCAM heatmap / mask """
