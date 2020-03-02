@@ -1,3 +1,5 @@
+from inspect import isclass
+
 import torch
 import torch.nn.functional as F
 
@@ -13,6 +15,14 @@ def gradcam_wrapper(model):
                 (logits, gcams)
 
     """
+    if not isclass(model):
+        if isinstance(model, torch.nn.Module):
+            message = 'Given model is not a class but an instance of torch.nn.Module. ' \
+                       + 'Do not instantiate your model before wrapping it using this function.'
+        else:
+            message = 'Given model is not a class.'
+        raise TypeError(message)
+
     class GradCAMWrapper(model):
         """ Wrapper that stores the forward features and gradients to create a GradCAM heatmap / mask """
         def __init__(self, model_params, gradient_layer, multitarget=False, multitarget_threshold=0.5, img_shape=None):
@@ -103,5 +113,4 @@ def gradcam_wrapper(model):
                 return logits, gcam[0]
             else:
                 return logits, torch.as_tensor(gcams)
-    #TODO: throw exception if an initialized model is given here
     return GradCAMWrapper
