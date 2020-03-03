@@ -110,7 +110,7 @@ def gradcam_wrapper(model):
                 gcams.append(gcam)
 
             if len(gcams) == 1:
-                return logits, gcam[0]
+                return logits, gcams[0]
             else:
                 return logits, torch.as_tensor(gcams)
     return GradCAMWrapper

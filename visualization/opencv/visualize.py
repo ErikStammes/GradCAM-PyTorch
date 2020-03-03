@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def save_gradcam(filename, gcam, image):
-    gcam = gcam.detach().cpu().numpy()
+    gcam = gcam.squeeze().detach().cpu().numpy()
     cmap = plt.cm.jet_r(gcam)[..., :3] * 255.0
     image = image.permute(1, 2, 0).cpu().numpy() * 255
     image = image[:, :, ::-1]

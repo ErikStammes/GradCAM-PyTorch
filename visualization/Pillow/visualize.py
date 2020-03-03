@@ -5,7 +5,7 @@ from PIL import Image
 from torchvision.transforms import transforms
 
 def save_gradcam(filename, gcam, raw_image):
-    gcam = gcam.detach().cpu().numpy()
+    gcam = gcam.squeeze().detach().cpu().numpy()
     cmap = plt.cm.jet_r(gcam)[..., :3] * 255.0
     cmap = cmap[:, :, ::-1]
     cmap = Image.fromarray(cmap.astype(np.uint8))
