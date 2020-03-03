@@ -5,7 +5,6 @@ Grad-CAM wrapper is a utility that easily allows you extract and visualize gradi
 * Computes Grad-CAM using your custom model
 * Support for multitarget classification
 * Grad-CAM computation is differentiable, allowing you to make it trainable
-* Multi-GPU support
 * Visualization using `opencv`, or `Pillow`, depending on your preference
 * Sensible defaults, but many configurable options
 * Licensed under MIT

@@ -40,24 +40,25 @@ def gradcam_wrapper(model):
             self.multitarget_threshold = multitarget_threshold
             self.img_shape = img_shape
 
-            # Initialize dictionaries to store features during forward/backward pass in
-            self.forward_features = {}
-            self.backward_features = {}
+            # Initialize properties to store features during forward/backward pass in
+            self.forward_features = None
+            self.backward_features = None
 
             self._register_hooks()
 
         def _register_hooks(self):
             """ Register forward and backward hooks that store features and gradients from the given layer """
             def forward_hook(_module, _forward_input, forward_output):
-                self.forward_features[forward_output.device] = forward_output
+                self.forward_features = forward_output
 
             def backward_hook(_module, _backward_input, backward_output):
-                self.backward_features[backward_output[0].device] = backward_output[0]
+                self.backward_features = backward_output[0]
 
             for name, module in self.named_modules():
                 if name == self.gradient_layer:
                     module.register_forward_hook(forward_hook)
                     module.register_backward_hook(backward_hook)
+                    break
 
         def _one_hot_encode(self, tensor, shape):
             """ One hot encode a tensor """
@@ -68,7 +69,7 @@ def gradcam_wrapper(model):
 
         def _compute_gradcam(self, device):
             """ Computes the GradCAM heatmaps """
-            assert self.backward_features, 'GradCAM can only be computed after the backward pass'
+            assert self.backward_features, 'GradCAM can only be computed after the gradients have been computed'
             weights = F.adaptive_avg_pool2d(self.backward_features[device], 1)
             gcam = torch.mul(self.forward_features[device], weights).sum(dim=1, keepdim=True)
             gcam = F.relu(gcam)
